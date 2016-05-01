@@ -1,0 +1,8 @@
+{extends '../../../../@layout.latte'}
+
+{block content}
+    {if $user->isAllowed("sprava-obsahu")}        
+        <div class="componentTextControlButtonWrap"><a href="{link edit!}#{$uniqueId}" class="button ajax">Upravit</a></div>
+    {/if}
+    {!$row->text|truncate:350}
+{/block}

@@ -1,0 +1,52 @@
+{extends '../../@layout.latte'}
+
+{block content}
+    {if $user->isAllowed("sprava-obsahu")}        
+        <div class="componentTextControlButtonWrap"><a href="{link edit!}#{$uniqueId}" class="button ajax">Upravit</a></div>
+	<div id="{$cmpId."InlineEdit"}" contenteditable="true">
+	    {!$row->text}
+	</div>
+	<script>
+	    // Turn off automatic editor creation first.
+	    CKEDITOR.disableAutoInline = true;
+//	    var obj = { toolbar : [
+//			    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+//			    { name: 'paragraph', groups: [ 'list' ], items: [ 'NumberedList', 'BulletedList' ] },
+//			    { name: 'links', items: [ 'Link', 'Unlink' ] },
+//			    { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+//			    { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+//			] };
+//	    var ck = CKEDITOR.inline( {$cmpId."InlineEdit"}, obj );
+
+	    var lastSaveStatus = false;
+	    var ck = CKEDITOR.inline( {$cmpId."InlineEdit"} );
+	    ck.on( 'instanceReady', function( ev ) {
+		var editor = ev.editor;
+		editor.setReadOnly( false );
+		
+		{* hide toolbar *}
+		var bar = document.getElementById("cke_"+editor.name).getElementsByClassName("cke_top")[0];
+		bar.style.display = "none";
+		
+		$("#"+editor.name).focusout(function() {
+		    $.nette.ajax({
+			type: 'POST',
+			url: {link updateText!},
+			data: {"textData": editor.getData()}
+		      }).done(function() {
+			  lastSaveStatus = true;
+		      });
+		});
+		
+		$("#"+editor.name).blur(function() {
+		    {* hide toolbar *}
+		    var bar = document.getElementById("cke_"+editor.name).getElementsByClassName("cke_top")[0];
+		    bar.style.display = "none";
+		});
+		 
+	    });
+	</script>
+    {else}
+	{!$row->text}
+    {/if}
+{/block}

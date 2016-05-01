@@ -1,0 +1,11 @@
+services:
+    textyCmpModel:
+        class: App\Components\TextDbParamCmp\Model\Texty
+    textyCmpForm:
+        class: App\Components\TextCmp\Forms\TextFormFactory
+    textCmp:
+        class: App\Components\TextCmp\TextCmpFactory
+
+production < common:
+
+development < common:
