@@ -1,0 +1,11 @@
+{
+    "name": "mrfazolka/text-control",
+    "description": "SmartCMF component for text editing",
+    "authors": [
+        {
+            "name": "mrfazolka",
+            "email": "mrfazolka@gmail.com"
+        }
+    ],
+    "require": {}
+}
