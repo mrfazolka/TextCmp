@@ -1,11 +1,12 @@
 {
-    "name": "mrfazolka/text-control",
-    "description": "SmartCMF component for text editing",
+    "name": "mrfaz/text-control",
+    "description": "SmartCmp for text editing",
+    "version": "1.0.0",
+    
     "authors": [
         {
             "name": "mrfazolka",
             "email": "mrfazolka@gmail.com"
         }
-    ],
-    "require": {}
+    ]
 }
