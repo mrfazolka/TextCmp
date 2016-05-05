@@ -8,5 +8,14 @@
             "name": "mrfazolka",
             "email": "mrfazolka@gmail.com"
         }
-    ]
+    ],
+    "repositories": [
+	{
+	    "type": "vcs",
+	    "url": "http://github.com/mrfazolka/BaseCmp"
+	}
+    ],
+    "require": {
+	"BaseCmp": "1.0.0"
+    }
 }
