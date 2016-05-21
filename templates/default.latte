@@ -6,45 +6,60 @@
 	<div id="{$cmpId."InlineEdit"}" contenteditable="true">
 	    {!$row->text}
 	</div>
+	<style>
+	    .cke_top{
+		display: none;
+	    }
+	</style>
 	<script>
-	    // Turn off automatic editor creation first.
-	    CKEDITOR.disableAutoInline = true;
-//	    var obj = { toolbar : [
-//			    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-//			    { name: 'paragraph', groups: [ 'list' ], items: [ 'NumberedList', 'BulletedList' ] },
-//			    { name: 'links', items: [ 'Link', 'Unlink' ] },
-//			    { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
-//			    { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-//			] };
-//	    var ck = CKEDITOR.inline( {$cmpId."InlineEdit"}, obj );
+	    $(function () 
+	    {
+		// Turn off automatic editor creation first.
+		CKEDITOR.disableAutoInline = true;
+    //	    var obj = { toolbar : [
+    //			    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+    //			    { name: 'paragraph', groups: [ 'list' ], items: [ 'NumberedList', 'BulletedList' ] },
+    //			    { name: 'links', items: [ 'Link', 'Unlink' ] },
+    //			    { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+    //			    { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+    //			] };
+    //	    var ck = CKEDITOR.inline( {$cmpId."InlineEdit"}, obj );
 
-	    var lastSaveStatus = false;
-	    var ck = CKEDITOR.inline( {$cmpId."InlineEdit"} );
-	    ck.on( 'instanceReady', function( ev ) {
-		var editor = ev.editor;
-		editor.setReadOnly( false );
-		
-		{* hide toolbar *}
-		var bar = document.getElementById("cke_"+editor.name).getElementsByClassName("cke_top")[0];
-		bar.style.display = "none";
-		
-		$("#"+editor.name).focusout(function() {
-		    $.nette.ajax({
-			type: 'POST',
-			url: {link updateText!},
-			data: {"textData": editor.getData()}
-		      }).done(function() {
-			  lastSaveStatus = true;
-		      });
-		});
-		
-		$("#"+editor.name).blur(function() {
+//		CKEDITOR.config.toolbar = [
+    //			    { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+    //			]
+		var lastSaveStatus = false;
+		var ck = CKEDITOR.inline( {$cmpId."InlineEdit"} );
+		ck.config.toolbar = [];
+		ck.on( 'instanceReady', function( ev ) {
+		    var editor = ev.editor;
+		    editor.setReadOnly( false );
+
 		    {* hide toolbar *}
 		    var bar = document.getElementById("cke_"+editor.name).getElementsByClassName("cke_top")[0];
 		    bar.style.display = "none";
+
+		    $("#"+editor.name).focusout(function() {
+			$.nette.ajax({
+			    type: 'POST',
+			    url: {link updateText!},
+			    data: {"textData": editor.getData()}
+			  }).done(function() {
+			      lastSaveStatus = true;
+			  });
+		    });
+		    
+//		    $("#"+editor.name).click(function() {
+//			console.log("start edit", this.getElementsByClassName("cke_top")[0]);
+//			this.getElementsByClassName("cke_top")[0].style.display = "none";
+//		    });
+		}); //end: ck.on( 'instanceReady', function( ev )
+		
+		ck.on( 'blur', function( ev ) {
+		    return false;
 		});
-		 
-	    });
+		
+	    }); //end: $(function ()
 	</script>
     {else}
 	{!$row->text}
