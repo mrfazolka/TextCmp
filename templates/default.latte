@@ -1,7 +1,7 @@
 {extends '../../@layout.latte'}
 
 {block content}
-    {if $user->isAllowed("sprava-obsahu")}        
+    {if $user->isAllowed("sprava-obsahu")}
         <div class="componentTextControlButtonWrap"><a href="{link edit!}#{$uniqueId}" class="button ajax">Upravit</a></div>
 	<div id="{$cmpId."InlineEdit"}" contenteditable="true">
 	    {!$row->text}
@@ -11,9 +11,18 @@
 		display: none;
 	    }
 	</style>
+	
 	<script>
 	    $(function () 
 	    {
+		//load js only once
+		var src = "{!$basePath}/assets/ckeditor/ckeditor.js";
+		var len = $('script[src="'+src+'"]').length;
+		//if there are no scripts that match, the load it
+		if (len === 0) {
+		    $('head').append('<script src="'+src+'"><\/script>');
+		}
+
 		// Turn off automatic editor creation first.
 		CKEDITOR.disableAutoInline = true;
     //	    var obj = { toolbar : [
